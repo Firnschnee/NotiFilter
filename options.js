@@ -34,7 +34,7 @@ async function save() {
     maxIndividual
   });
   const s = document.getElementById("status");
-  s.textContent = "Gespeichert.";
+  s.textContent = "Saved.";
   setTimeout(() => (s.textContent = ""), 1500);
 }
 

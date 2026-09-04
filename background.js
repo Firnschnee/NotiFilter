@@ -1,13 +1,13 @@
 "use strict";
 
 const DEFAULTS = {
-  enabledAccounts: [],   // Konto-IDs ("account1", ...)
-  inboxOnly: true,       // nur Posteingang, keine Unterordner
-  skipJunk: true,        // als Junk klassifizierte Mails ignorieren
-  maxIndividual: 3       // ab mehr Mails pro Ereignis: eine Sammelmeldung
+  enabledAccounts: [],   // account ids ("account1", ...)
+  inboxOnly: true,       // inbox only, no subfolders
+  skipJunk: true,        // ignore mails classified as junk
+  maxIndividual: 3       // more mails per event than this: one summary toast
 };
 
-const POLL_MS = 20000;   // Nachlauf für Mails, die Thunderbirds Ereignis-Dedupe verschluckt
+const POLL_MS = 20000;   // poll for mails swallowed by Thunderbird's event dedupe
 const SEEN_MAX = 2000;
 
 const notificationTargets = new Map(); // notificationId -> messageId
@@ -77,7 +77,7 @@ async function notify(title, message, messageId) {
   if (messageId != null) notificationTargets.set(notificationId, messageId);
 }
 
-// Gemeinsamer Pfad für Ereignis und Nachlauf. `messages` sind bereits dem Konto zugeordnet.
+// Shared path for event and poll. `messages` already belong to `accountId`.
 async function handleMessages(accountId, messages, source) {
   if (config.skipJunk) messages = messages.filter(m => !m.junk);
   messages = messages.filter(m => !m.read);
@@ -85,27 +85,27 @@ async function handleMessages(accountId, messages, source) {
   if (messages.length === 0) return;
 
   const account = accountNames.get(accountId) || accountId;
-  console.log(`NotiFilter: ${messages.length} neu in ${account} (${source})`);
+  console.log(`NotiFilter: ${messages.length} new in ${account} (${source})`);
 
   if (messages.length <= config.maxIndividual) {
     for (const m of messages) {
-      await notify(`${account} – ${displayAuthor(m.author)}`, m.subject || "(kein Betreff)", m.id);
+      await notify(`${account} – ${displayAuthor(m.author)}`, m.subject || "(no subject)", m.id);
     }
   } else {
-    const preview = messages.slice(0, 3).map(m => `• ${displayAuthor(m.author)}: ${m.subject || "(kein Betreff)"}`).join("\n");
-    await notify(`${account}: ${messages.length} neue Nachrichten`, preview, messages[0].id);
+    const preview = messages.slice(0, 3).map(m => `• ${displayAuthor(m.author)}: ${m.subject || "(no subject)"}`).join("\n");
+    await notify(`${account}: ${messages.length} new messages`, preview, messages[0].id);
   }
 }
 
 async function onNewMail(folder, list) {
   if (!config.enabledAccounts.includes(folder.accountId)) return;
   if (config.inboxOnly && !(folder.specialUse || []).includes("inbox")) return;
-  await handleMessages(folder.accountId, await collectAll(list), "Ereignis");
+  await handleMessages(folder.accountId, await collectAll(list), "event");
 }
 
-// Thunderbird dedupliziert onNewMailReceived über die Message-ID. Dieselbe Mail in zwei
-// Konten löst das Ereignis nur einmal aus. Der Nachlauf fragt deshalb die Posteingänge
-// der aktiven Konten nach Mails mit "neu"-Flag ab.
+// Thunderbird dedupes onNewMailReceived by Message-ID. The same mail in two accounts fires
+// the event only once. The poll therefore queries the enabled inboxes for messages with the
+// "new" flag.
 async function poll() {
   for (const accountId of config.enabledAccounts) {
     const folderId = inboxIds.get(accountId);
@@ -113,10 +113,10 @@ async function poll() {
     try {
       const list = await messenger.messages.query({ folderId, new: true, unread: true });
       const messages = await collectAll(list);
-      if (pollSeeded) await handleMessages(accountId, messages, "Nachlauf");
+      if (pollSeeded) await handleMessages(accountId, messages, "poll");
       else messages.forEach(m => markSeen(accountId, m));
     } catch (e) {
-      console.warn("NotiFilter: Nachlauf fehlgeschlagen", accountId, e);
+      console.warn("NotiFilter: poll failed", accountId, e);
     }
   }
   pollSeeded = true;
@@ -132,7 +132,7 @@ messenger.notifications.onClicked.addListener(async notificationId => {
       await messenger.windows.update(tab.windowId, { focused: true });
     }
   } catch (e) {
-    console.warn("NotiFilter: Nachricht konnte nicht geöffnet werden", e);
+    console.warn("NotiFilter: could not open message", e);
   }
   messenger.notifications.clear(notificationId);
 });

@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "NotiFilter",
-  "description": "Neue-Mail-Benachrichtigungen nur für ausgewählte Konten.",
-  "version": "1.1.0",
+  "description": "New-mail notifications only for selected accounts.",
+  "version": "1.1.1",
   "author": "Firnschnee",
   "applications": {
     "gecko": {

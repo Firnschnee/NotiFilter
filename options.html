@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>NotiFilter</title>
@@ -15,17 +15,17 @@
 </head>
 <body>
   <fieldset>
-    <legend>Benachrichtigen für</legend>
+    <legend>Notify for</legend>
     <div id="accounts"></div>
   </fieldset>
   <fieldset>
-    <legend>Optionen</legend>
-    <label><input type="checkbox" id="inboxOnly"> Nur Posteingang (keine Unterordner)</label>
-    <label><input type="checkbox" id="skipJunk"> Junk ignorieren</label>
-    <label>Einzelmeldungen bis <input type="number" id="maxIndividual" min="1" max="20"> Mails, darüber Sammelmeldung</label>
+    <legend>Options</legend>
+    <label><input type="checkbox" id="inboxOnly"> Inbox only (no subfolders)</label>
+    <label><input type="checkbox" id="skipJunk"> Ignore junk</label>
+    <label>One toast per mail up to <input type="number" id="maxIndividual" min="1" max="20"> mails, one summary toast above that</label>
   </fieldset>
   <div id="status"></div>
-  <p class="hint">Thunderbirds eigene Benachrichtigung abschalten: Einstellungen › Allgemein › „Bei neuen Nachrichten“ › Benachrichtigung anzeigen abwählen. Sonst kommt jede Mail doppelt.</p>
+  <p class="hint">Turn off Thunderbird's own alert: Settings › General › "When new messages arrive" › untick "Show an alert". Otherwise every mail shows up twice.</p>
   <script src="options.js"></script>
 </body>
 </html>

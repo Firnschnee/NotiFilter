@@ -36,8 +36,6 @@ so nothing depends on Thunderbird internals.
 Add-ons › gear icon › Debug Add-ons › "Load Temporary Add-on…" → `manifest.json`.
 The background script console is available there via "Inspect".
 
-The options UI is currently German only.
-
 ## License
 
 MIT
