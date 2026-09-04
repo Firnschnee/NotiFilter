@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "NotiFilter",
+  "description": "Neue-Mail-Benachrichtigungen nur für ausgewählte Konten.",
+  "version": "1.1.0",
+  "author": "Firnschnee",
+  "applications": {
+    "gecko": {
+      "id": "notifilter@firnschnee",
+      "strict_min_version": "128.0"
+    }
+  },
+  "icons": {
+    "48": "icon.png",
+    "96": "icon.png"
+  },
+  "permissions": [
+    "accountsRead",
+    "messagesRead",
+    "notifications",
+    "storage"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
+}

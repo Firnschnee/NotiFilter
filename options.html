@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>NotiFilter</title>
+  <style>
+    body { font: 13px system-ui, sans-serif; margin: 12px; min-width: 360px; }
+    fieldset { border: 1px solid #ccc; border-radius: 4px; margin: 0 0 12px; padding: 8px 12px; }
+    legend { font-weight: 600; }
+    label { display: block; margin: 4px 0; }
+    input[type=number] { width: 4em; }
+    .hint { color: #666; font-size: 12px; margin-top: 8px; }
+    #status { color: #2a7; font-size: 12px; height: 1em; }
+  </style>
+</head>
+<body>
+  <fieldset>
+    <legend>Benachrichtigen für</legend>
+    <div id="accounts"></div>
+  </fieldset>
+  <fieldset>
+    <legend>Optionen</legend>
+    <label><input type="checkbox" id="inboxOnly"> Nur Posteingang (keine Unterordner)</label>
+    <label><input type="checkbox" id="skipJunk"> Junk ignorieren</label>
+    <label>Einzelmeldungen bis <input type="number" id="maxIndividual" min="1" max="20"> Mails, darüber Sammelmeldung</label>
+  </fieldset>
+  <div id="status"></div>
+  <p class="hint">Thunderbirds eigene Benachrichtigung abschalten: Einstellungen › Allgemein › „Bei neuen Nachrichten“ › Benachrichtigung anzeigen abwählen. Sonst kommt jede Mail doppelt.</p>
+  <script src="options.js"></script>
+</body>
+</html>
