@@ -36,6 +36,6 @@ so nothing depends on Thunderbird internals.
 Add-ons › gear icon › Debug Add-ons › "Load Temporary Add-on…" → `manifest.json`.
 The background script console is available there via "Inspect".
 
-## License
 
-MIT
+---
+Looking for a minimalistic one-line userChrome.css theme for Thunderbird? [BirdOne](https://github.com/Firnschnee/BirdOne) | License: [MIT](LICENSE)
